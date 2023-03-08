@@ -71,11 +71,11 @@ color = 'rgb(40, 43, 48)'
 
 #print(pd.Timestamp('today').date())
 def Insert_Company(row):
-
+    print(row[8])
     Company_anniversary_ = Company_anniversary(KvKNumber = row[0], CompanyName = row[1], 
         Street = row[2], HouseNumber = row[3], PostalCode = row[4], City = row[5],
         PhoneNumber = row[6], EmployeeCount = row[7],
-        RegistrationDate = datetime.strptime(row[8], '%Y-%M-%d'),
+        RegistrationDate = datetime.strptime(row[8], '%Y-%m-%d'),
         BrancheType = row[9],
         BrancheCode = row[10], BrancheDescription = row[11], StatusCompany = row[12],
         lat = row[13], lon = row[14])
@@ -477,23 +477,28 @@ def update_output(active_cell, n2, data, is_open):
 @app.callback(
     [ Output("modal_inp", "is_open"), 
     Output("modal_Save", "is_open"),
-    Output("save_information", "children")],
+    Output("save_information", "children"),
+    Output("Save", "n_clicks"),
+    ],
     [Input("Add_company", "n_clicks"), Input("Save", "n_clicks")], 
-    [State("modal_inp", "is_open"), [State('input_{}'.format(_), 'value') if _ != 'Registration Date'  else State('input_{}'.format(_), 'date') for _ in Input_columns]]
+    [State("modal_inp", "is_open"),State("modal_Save", "is_open"), [State('input_{}'.format(_), 'value') if _ != 'Registration Date'  else State('input_{}'.format(_), 'date') for _ in Input_columns]]
 )
-def Add_company_modal(n1, n2, is_open, row_company):
+def Add_company_modal(n1, n2, is_open_inp, is_open_Save, row_company):
+    print(n1)
     if n1 or n2:
-        if n2:
+        if n2 & n2 != 0:
+            print(n2)
             if Insert_Company(row_company):
                 global df_Company
                 df_Company = Read_update_DF()
 
-                return not is_open, True,  "Saved"
+                return not is_open_inp, not is_open_Save,  "Saved", 0
             else:
-                return is_open, True, "Not saved"
-
-        return not is_open, False, "Not saved"
-    return is_open, False, "Not saved"
+                return is_open_inp, not is_open_Save, "Not saved", 0
+        else:
+            return not is_open_inp, is_open_Save, "Not saved", 0
+    else:
+        return is_open_inp, is_open_Save, "Not saved", 0
 
 
 
