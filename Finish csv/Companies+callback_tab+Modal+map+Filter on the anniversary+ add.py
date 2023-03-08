@@ -81,7 +81,7 @@ def Insert_Company(row):
     # Result - a DictWriter object
             ListofCol = Input_columns.values.tolist()
             Company_dict = dict(zip(ListofCol, row))
-            Registration_Date = datetime.strptime(Company_dict['Registration Date'], '%Y-%M-%d').date()
+            Registration_Date = datetime.strptime(Company_dict['Registration Date'], '%Y-%m-%d').date()
             Company_dict['Registration Date'] = Registration_Date .strftime("%d/%m/%Y")
             dictwriter_object = DictWriter(f_object, fieldnames=ListofCol)
     # Pass the data in the dictionary as an argument into the writerow() function
