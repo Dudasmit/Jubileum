@@ -41,7 +41,7 @@ def Read_update_DF():
 
     global Input_columns
 
-    df_Company = pd.read_sql_table('Company_anniversary', engine.connect())
+    df_Company = pd.read_sql_table('company_anniversary', engine.connect())
 
     df_Company['Registration Date'] = pd.to_datetime(df_Company['Registration Date'], format='%d/%m/%Y', errors='coerce').dt.date
     df_Company.dropna(subset=['Registration Date'], inplace=True)
